@@ -6,7 +6,7 @@ namespace NetVulnFind
 {
     class Program
     {
-        async static void LoadingConfig()
+        async static Task LoadingConfig()
         {
             // https://spectreconsole.net/live/progress
             await AnsiConsole.Progress()
@@ -17,7 +17,7 @@ namespace NetVulnFind
            .StartAsync(async ctx =>
            {
                // Define tasks
-               var Message = "[green]Reading Config File[/]";
+               var Message = "[green1]Reading Config File[/]";
                var task1 = ctx.AddTask(Message);
 
                while (!ctx.IsFinished)
@@ -27,12 +27,12 @@ namespace NetVulnFind
                    task1.Increment(1);
                 }
            });
-            AnsiConsole.MarkupLine("[green]Done[/]:check_mark:");
+            AnsiConsole.MarkupLine("[green1]Done[/]:check_mark:");
         }
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Console.Title = "NetVulnFind";
-            AnsiConsole.Write(new Markup(@"[bold red] 
+            AnsiConsole.Write(new Markup(@"[bold red1] 
   _   _      ___      __    _       ______ _           _ 
  | \ | |    | \ \    / /   | |     |  ____(_)         | |
  |  \| | ___| |\ \  / /   _| |_ __ | |__   _ _ __   __| |
@@ -40,10 +40,35 @@ namespace NetVulnFind
  | |\  |  __/ |_ \  /| |_| | | | | | |    | | | | | (_| |
  |_| \_|\___|\__| \/  \__,_|_|_| |_|_|    |_|_| |_|\__,_|
                                                          [/]"));
+            AnsiConsole.MarkupLine("[red1]v1.0[/]");
             LoadConfig.Config();
-            LoadingConfig();
-            
-            Console.ReadKey();
+            await LoadingConfig();
+            bool Continue = true;
+            do
+            {
+                AnsiConsole.Markup("[cyan]$>[/]");
+                string arguments = Console.ReadLine().ToLower();
+                if (arguments.Length == 0)
+                {
+                   
+                }
+                string[] commands = arguments.Split(' ');
+                string command = commands[0].ToString();
+                Console.WriteLine(command);
+                switch (command)
+                {
+                    case "help":
+                        AnsiConsole.MarkupLine("[cyan]Help[/]");
+                    break;
+                    case "exit":
+                        Continue = false;
+                    break;
+                    default:
+                        AnsiConsole.MarkupLine("[red1]Invalid Command[/]");
+                    break;
+                }
+            }
+            while (Continue != false);
         }
     }
 }

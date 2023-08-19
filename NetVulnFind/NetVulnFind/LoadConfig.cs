@@ -47,5 +47,13 @@ namespace NetVulnFind
                 reader?.Close();
             }
         }
+        public static bool IsAPIKEYEMPTY()
+        {
+            if (string.IsNullOrEmpty(API_KEY))
+            {
+                return true;
+            }
+            else return false;
+        }
     }
 }

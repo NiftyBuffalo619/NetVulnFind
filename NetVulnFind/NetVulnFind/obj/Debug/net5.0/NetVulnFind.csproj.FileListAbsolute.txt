@@ -17,3 +17,4 @@ D:\Programování\NEW PROJECTS ON NAS\C#\NetVulnFind\NetVulnFind\NetVulnFind\Net
 D:\Programování\NEW PROJECTS ON NAS\C#\NetVulnFind\NetVulnFind\NetVulnFind\NetVulnFind\obj\Debug\net5.0\NetVulnFind.pdb
 D:\Programování\NEW PROJECTS ON NAS\C#\NetVulnFind\NetVulnFind\NetVulnFind\NetVulnFind\obj\Debug\net5.0\NetVulnFind.genruntimeconfig.cache
 D:\Programování\NEW PROJECTS ON NAS\C#\NetVulnFind\NetVulnFind\NetVulnFind\NetVulnFind\bin\Debug\net5.0\config.txt
+D:\Programování\NEW PROJECTS ON NAS\C#\NetVulnFind\NetVulnFind\NetVulnFind\NetVulnFind\bin\Debug\net5.0\Spectre.Console.Cli.dll

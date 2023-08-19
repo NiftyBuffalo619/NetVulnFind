@@ -14,6 +14,18 @@
           "lib/netstandard2.0/Spectre.Console.dll": {}
         }
       },
+      "Spectre.Console.Cli/0.47.0": {
+        "type": "package",
+        "dependencies": {
+          "Spectre.Console": "0.47.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Spectre.Console.Cli.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Spectre.Console.Cli.dll": {}
+        }
+      },
       "System.Memory/4.5.5": {
         "type": "package",
         "compile": {
@@ -44,6 +56,24 @@
         "spectre.console.nuspec"
       ]
     },
+    "Spectre.Console.Cli/0.47.0": {
+      "sha512": "S2cZCbve4fAgRtigNUNZbF+NLQJcAapSqSbbDYqLtqXJcIZ6tKiRTveYe05d+oLY2bAmP7sgnLdzVknGXruy2Q==",
+      "type": "package",
+      "path": "spectre.console.cli/0.47.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/Spectre.Console.Cli.dll",
+        "lib/net6.0/Spectre.Console.Cli.xml",
+        "lib/net7.0/Spectre.Console.Cli.dll",
+        "lib/net7.0/Spectre.Console.Cli.xml",
+        "lib/netstandard2.0/Spectre.Console.Cli.dll",
+        "lib/netstandard2.0/Spectre.Console.Cli.xml",
+        "small-logo.png",
+        "spectre.console.cli.0.47.0.nupkg.sha512",
+        "spectre.console.cli.nuspec"
+      ]
+    },
     "System.Memory/4.5.5": {
       "sha512": "XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw==",
       "type": "package",
@@ -70,7 +100,8 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "Spectre.Console >= 0.47.0"
+      "Spectre.Console >= 0.47.0",
+      "Spectre.Console.Cli >= 0.47.0"
     ]
   },
   "packageFolders": {
@@ -118,6 +149,10 @@
         "targetAlias": "net5.0",
         "dependencies": {
           "Spectre.Console": {
+            "target": "Package",
+            "version": "[0.47.0, )"
+          },
+          "Spectre.Console.Cli": {
             "target": "Package",
             "version": "[0.47.0, )"
           }

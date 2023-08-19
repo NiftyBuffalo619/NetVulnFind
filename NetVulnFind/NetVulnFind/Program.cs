@@ -1,6 +1,7 @@
 ﻿using System;
 using Spectre.Console;
 using System.Threading.Tasks;
+using Spectre.Console.Cli;
 
 namespace NetVulnFind
 {
@@ -31,6 +32,7 @@ namespace NetVulnFind
         }
         static async Task Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "NetVulnFind";
             AnsiConsole.Write(new Markup(@"[bold red1] 
   _   _      ___      __    _       ______ _           _ 
@@ -41,8 +43,13 @@ namespace NetVulnFind
  |_| \_|\___|\__| \/  \__,_|_|_| |_|_|    |_|_| |_|\__,_|
                                                          [/]"));
             AnsiConsole.MarkupLine("[red1]v1.0[/]");
-            LoadConfig.Config();
+            _ = LoadConfig.Config(); // Just for Dev purposes 
             await LoadingConfig();
+            if (LoadConfig.IsAPIKEYEMPTY())
+            {
+                AnsiConsole.Prompt(new TextPrompt<string>("Enter your API key:").PromptStyle("red").Secret(null));
+            }
+
             bool Continue = true;
             do
             {
@@ -69,6 +76,11 @@ namespace NetVulnFind
                 }
             }
             while (Continue != false);
+            var app = new CommandApp();
+            app.Configure(config =>
+            {
+                config.AddCommand<DetectWebCams>("detect-webcams");
+            });
         }
     }
 }

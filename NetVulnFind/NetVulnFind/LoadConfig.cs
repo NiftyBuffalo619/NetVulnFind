@@ -10,7 +10,7 @@ namespace NetVulnFind
 {
     class LoadConfig
     {
-        protected static string API_KEY;
+        public static string API_KEY { get; private set; }
         public LoadConfig()
         {
 

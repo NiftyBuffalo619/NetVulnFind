@@ -30,7 +30,7 @@ namespace NetVulnFind
            });
             AnsiConsole.MarkupLine("[green1]Done[/]:check_mark:");
         }
-        static async Task Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Title = "NetVulnFind";
@@ -42,15 +42,26 @@ namespace NetVulnFind
  | |\  |  __/ |_ \  /| |_| | | | | | |    | | | | | (_| |
  |_| \_|\___|\__| \/  \__,_|_|_| |_|_|    |_|_| |_|\__,_|
                                                          [/]"));
-            AnsiConsole.MarkupLine("[red1]v1.0[/]");
+            AnsiConsole.MarkupLine("[red1]v1.0 by wannabeNifty[/]");
             _ = LoadConfig.Config(); // Just for Dev purposes 
             await LoadingConfig();
             if (LoadConfig.IsAPIKEYEMPTY())
             {
                 AnsiConsole.Prompt(new TextPrompt<string>("Enter your API key:").PromptStyle("red").Secret(null));
             }
+            Console.Clear();
+            Console.Title = "NetVulnFind";
+            AnsiConsole.Write(new Markup(@"[bold red1] 
+  _   _      ___      __    _       ______ _           _ 
+ | \ | |    | \ \    / /   | |     |  ____(_)         | |
+ |  \| | ___| |\ \  / /   _| |_ __ | |__   _ _ __   __| |
+ | . ` |/ _ \ __\ \/ / | | | | '_ \|  __| | | '_ \ / _` |
+ | |\  |  __/ |_ \  /| |_| | | | | | |    | | | | | (_| |
+ |_| \_|\___|\__| \/  \__,_|_|_| |_|_|    |_|_| |_|\__,_|
+                                                         [/]"));
+            AnsiConsole.MarkupLine("[red1]v1.0 by wannabeNifty[/]");
 
-            bool Continue = true;
+            /*bool Continue = true;
             do
             {
                 AnsiConsole.Markup("[cyan]$>[/]");
@@ -75,12 +86,32 @@ namespace NetVulnFind
                     break;
                 }
             }
-            while (Continue != false);
+            while (Continue != false);*/
             var app = new CommandApp();
             app.Configure(config =>
             {
                 config.AddCommand<DetectWebCams>("detect-webcams");
             });
+            bool Continue = true;
+            do
+            {
+                var Command = AnsiConsole.Ask<string>("Command>");
+                switch (Command)
+                {
+                    case "detect-webcams":
+                        AnsiConsole.MarkupLine("Detect Web Cam Menu");
+                        break;
+                    case "exit":
+                        AnsiConsole.MarkupLine("[red1]Bye![/]");
+                        Continue = false;
+                        break;
+                    default:
+                        AnsiConsole.MarkupLine("[red1]Invalid Command[/]");
+                        break;
+                }
+            }
+            while (Continue != false);
+            return await app.RunAsync(args);
         }
     }
 }

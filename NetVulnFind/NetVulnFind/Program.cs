@@ -100,7 +100,11 @@ namespace NetVulnFind
                 {
                     case "detect-webcams":
                         AnsiConsole.MarkupLine("Detect Web Cam Menu");
+                        await app.RunAsync(new[] { "detect-webcams", "--country", "CZ" });
                         break;
+                    case "clear":
+                        Console.Clear();
+                    break;
                     case "exit":
                         AnsiConsole.MarkupLine("[red1]Bye![/]");
                         Continue = false;

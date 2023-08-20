@@ -6,6 +6,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Text;
+using System.Collections.Generic;
 
 namespace NetVulnFind
 {
@@ -61,7 +62,7 @@ namespace NetVulnFind
         public async Task<APIResponse> SearchWebCamsAsync(string country)
         {
             AnsiConsole.MarkupLine("Searching Web Cams");
-            string url = "https://search.censys.io/api/v2/hosts/search";
+            string url = "https://search.censys.io/api/v2/hosts/search?q=services.service_name:HTTP";
             string credentials = $"{LoadConfig.API_KEY}:{LoadConfig.APP_SECRET}";
             byte[] credentialsBytes = Encoding.UTF8.GetBytes(credentials);
             string credentialsBase64 = Convert.ToBase64String(credentialsBytes);
@@ -70,7 +71,27 @@ namespace NetVulnFind
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(content);
+                APIResponse apiResponse = JsonConvert.DeserializeObject<APIResponse>(content);
+                Console.WriteLine($"Code: {apiResponse.Code}");
+                Console.WriteLine($"Status: {apiResponse.Status}");
+                Console.WriteLine($"Total: {apiResponse.Result.Total}");
+
+                var table = new Table();
+                table.AddColumn("IP");
+                table.AddColumn("Country").Centered();
+                table.AddColumn("City").Centered();
+                foreach (Hit hit in apiResponse.Result.Hits)
+                {
+                    /*var columns = new List<Text>()
+                    {
+                        new Text($"IP: {hit.IP} Location: {hit.Location.CountryCode} {hit.Location.Country} {hit.Location.City}"),
+                    };
+                    AnsiConsole.Write(new Columns(columns));*/
+                    //Console.WriteLine($"IP: {hit.IP} Location: {hit.Location.CountryCode} {hit.Location.Country} {hit.Location.City}");
+                    table.AddRow($"{hit.IP}", $"{hit.Location.Country}" , $"{hit.Location.City}");
+                }
+                AnsiConsole.Write(table);
+               // Console.WriteLine(content);
                 return JsonConvert.DeserializeObject<APIResponse>(content);
             }
 

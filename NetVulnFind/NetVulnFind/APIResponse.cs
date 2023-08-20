@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Spectre.Console;
 
 namespace NetVulnFind
 {
-    class ShodanReponse
+    class APIResponse
     {
         public List<WebCam> WebCams { get; set; }
+        public static void WriteResults()
+        {
+            APIResponse WebCams = new APIResponse();
+            AnsiConsole.Markup("Writing Results");
+            foreach (WebCam cam in WebCams.WebCams)
+            {
+                AnsiConsole.MarkupLine($"{cam.getIP()}");
+            }
+        }
     }
 
     public class WebCam

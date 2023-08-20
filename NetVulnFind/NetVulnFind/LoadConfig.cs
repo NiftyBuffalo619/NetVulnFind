@@ -11,6 +11,7 @@ namespace NetVulnFind
     class LoadConfig
     {
         public static string API_KEY { get; private set; }
+        public static string APP_SECRET { get; private set; }
         public LoadConfig()
         {
 
@@ -26,8 +27,9 @@ namespace NetVulnFind
                     string line = "";
                     while ((line = reader.ReadLine()) != null)
                     {
-                        string[] values = line.Split('=');
-                        API_KEY = values[1];
+                        string[] values = line.Split(';');
+                        API_KEY = values[0];
+                        APP_SECRET = values[1];
                     }
                 }
                 else

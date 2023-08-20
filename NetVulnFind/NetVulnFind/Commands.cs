@@ -5,6 +5,7 @@ using Spectre.Console.Cli;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace NetVulnFind
 {
@@ -18,12 +19,27 @@ namespace NetVulnFind
     }
     class DetectWebCams : Command<DetectWebCamSettings>
     {
-        private const string BaseUrl = "https://api.shodan.io";
+        private const string BaseUrl = "https://search.censys.io/api/";
         private readonly HttpClient httpClient;
+
+        public DetectWebCams()
+        {
+            httpClient = new HttpClient();
+            /*httpClient.DefaultRequestHeaders.Add("UID", LoadConfig.API_KEY);
+            httpClient.DefaultRequestHeaders.Add("SECRET", LoadConfig.APP_SECRET);*/
+        }
 
         public override int Execute([NotNull] CommandContext context, [NotNull] DetectWebCamSettings settings)
         {
             string selectedCountry = settings.CountryCode ?? PromptForCountry();
+            try
+            {
+                APIResponse response = SearchWebCamsAsync(selectedCountry).GetAwaiter().GetResult();
+            }
+            catch (Exception e)
+            {
+                AnsiConsole.WriteException(e);
+            }
             return 0;
         }
 
@@ -37,19 +53,25 @@ namespace NetVulnFind
                 .AddChoices(new[] {
                     "United States of America US",
                     "Federal Republic of Germany (Bundesrepublik Deutschland) DE",
-                    "Czech Republic (Česká Republika) CZ",  
+                    "Czech Republic (Česká Republika) CZ",
                 })
             );
         }
 
-        public async Task<ShodanReponse> SearchWebCamsAsync(string country)
+        public async Task<APIResponse> SearchWebCamsAsync(string country)
         {
-            string url = $"{BaseUrl}/shodan/host/search?key={LoadConfig.API_KEY}&query=webcam+country:{country}";
+            AnsiConsole.MarkupLine("Searching Web Cams");
+            string url = "https://search.censys.io/api/v2/hosts/search";
+            string credentials = $"{LoadConfig.API_KEY}:{LoadConfig.APP_SECRET}";
+            byte[] credentialsBytes = Encoding.UTF8.GetBytes(credentials);
+            string credentialsBase64 = Convert.ToBase64String(credentialsBytes);
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentialsBase64);
             HttpResponseMessage response = await httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<ShodanReponse>(content);
+                Console.WriteLine(content);
+                return JsonConvert.DeserializeObject<APIResponse>(content);
             }
 
             throw new Exception($"API request failed with status code {response.StatusCode}");

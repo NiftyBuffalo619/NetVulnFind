@@ -62,7 +62,9 @@ namespace NetVulnFind
         public async Task<APIResponse> SearchWebCamsAsync(string country)
         {
             AnsiConsole.MarkupLine("Searching Web Cams");
-            string url = "https://search.censys.io/api/v2/hosts/search?q=services.service_name:HTTP";
+            //string url = "https://search.censys.io/api/v2/hosts/search?q=services.service_name:webcamXP5";
+            string query = "\"WebCamXP 5\"";
+            string url = $"https://search.censys.io/api/v2/hosts/search?q=services.http.response.html_title:{Uri.EscapeDataString(query)}";
             string credentials = $"{LoadConfig.API_KEY}:{LoadConfig.APP_SECRET}";
             byte[] credentialsBytes = Encoding.UTF8.GetBytes(credentials);
             string credentialsBase64 = Convert.ToBase64String(credentialsBytes);
@@ -88,7 +90,10 @@ namespace NetVulnFind
                     };
                     AnsiConsole.Write(new Columns(columns));*/
                     //Console.WriteLine($"IP: {hit.IP} Location: {hit.Location.CountryCode} {hit.Location.Country} {hit.Location.City}");
-                    table.AddRow($"{hit.IP}", $"{hit.Location.Country}" , $"{hit.Location.City}");
+                    foreach (Service service in hit.Services)
+                    {
+                        table.AddRow($"[link]{hit.IP}:{service.Port}[/]", $"{hit.Location.Country}", $"{hit.Location.City}");
+                    }
                 }
                 AnsiConsole.Write(table);
                // Console.WriteLine(content);

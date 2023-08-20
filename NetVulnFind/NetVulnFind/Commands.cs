@@ -62,7 +62,6 @@ namespace NetVulnFind
         public async Task<APIResponse> SearchWebCamsAsync(string country)
         {
             AnsiConsole.MarkupLine("Searching Web Cams");
-            //string url = "https://search.censys.io/api/v2/hosts/search?q=services.service_name:webcamXP5";
             string query = "\"WebCamXP 5\"";
             string url = $"https://search.censys.io/api/v2/hosts/search?q=services.http.response.html_title:{Uri.EscapeDataString(query)}";
             string credentials = $"{LoadConfig.API_KEY}:{LoadConfig.APP_SECRET}";
@@ -74,12 +73,13 @@ namespace NetVulnFind
             {
                 string content = await response.Content.ReadAsStringAsync();
                 APIResponse apiResponse = JsonConvert.DeserializeObject<APIResponse>(content);
-                Console.WriteLine($"Code: {apiResponse.Code}");
-                Console.WriteLine($"Status: {apiResponse.Status}");
-                Console.WriteLine($"Total: {apiResponse.Result.Total}");
+                AnsiConsole.MarkupLine($"[green1]API Status Code: {apiResponse.Code}[/]");
+                AnsiConsole.MarkupLine($"[green1]Status: {apiResponse.Status}[/]");
+                AnsiConsole.MarkupLine($"[green1]Total: {apiResponse.Result.Total}[/]");
 
                 var table = new Table();
                 table.AddColumn("IP");
+                table.AddColumn("Service Name").Centered();
                 table.AddColumn("Country").Centered();
                 table.AddColumn("City").Centered();
                 foreach (Hit hit in apiResponse.Result.Hits)
@@ -92,7 +92,7 @@ namespace NetVulnFind
                     //Console.WriteLine($"IP: {hit.IP} Location: {hit.Location.CountryCode} {hit.Location.Country} {hit.Location.City}");
                     foreach (Service service in hit.Services)
                     {
-                        table.AddRow($"[link]{hit.IP}:{service.Port}[/]", $"{hit.Location.Country}", $"{hit.Location.City}");
+                        table.AddRow($"[link]{hit.IP}:{service.Port}[/]", $"{service.ExtendedServiceName}", $"{hit.Location.Country}", $"{hit.Location.City}");
                     }
                 }
                 AnsiConsole.Write(table);

@@ -42,7 +42,7 @@ namespace NetVulnFind
  | |\  |  __/ |_ \  /| |_| | | | | | |    | | | | | (_| |
  |_| \_|\___|\__| \/  \__,_|_|_| |_|_|    |_|_| |_|\__,_|
                                                          [/]"));
-            AnsiConsole.MarkupLine("[red1]v1.0 by wannabeNifty[/]");
+            AnsiConsole.MarkupLine($"[red1]{Reference.Version} by wannabeNifty[/]");
             _ = LoadConfig.Config(); // Just for Dev purposes 
             await LoadingConfig();
             if (LoadConfig.IsAPIKEYEMPTY())
@@ -59,7 +59,7 @@ namespace NetVulnFind
  | |\  |  __/ |_ \  /| |_| | | | | | |    | | | | | (_| |
  |_| \_|\___|\__| \/  \__,_|_|_| |_|_|    |_|_| |_|\__,_|
                                                          [/]"));
-            AnsiConsole.MarkupLine("[red1]v1.0 by wannabeNifty[/]");
+            AnsiConsole.MarkupLine($"[red1]{Reference.Version} by wannabeNifty[/]");
 
             /*bool Continue = true;
             do
@@ -99,12 +99,32 @@ namespace NetVulnFind
                 switch (Command)
                 {
                     case "detect-webcams":
-                        AnsiConsole.MarkupLine("Detect Web Cam Menu");
-                        await app.RunAsync(new[] { "detect-webcams", "--country", "CZ" });
+                        await AnsiConsole.Progress()
+                        .Columns(new ProgressColumn[]
+                        {
+                            new SpinnerColumn(),
+                        })
+                        .StartAsync(async ctx =>
+                        {
+                            await app.RunAsync(new[] { "detect-webcams", "--country", "CZ" });
+                        });
+                        break;
+                    case "help":
+                        var table = new Table();
+                        table.AddColumn("Command");
+                        table.AddColumn("Description");
+                        table.AddRow("help", "Shows table with commands to help the user.");
+                        table.AddRow("detect-webcams", "Looks for webcams :warning: (Please note not all IP's work you have to try to visit them) :warning: ");
+                        table.AddRow("clear", "Cleares the console.");
+                        table.AddRow("about", "Some fun fact command");
+                        AnsiConsole.Write(table);
                         break;
                     case "clear":
                         Console.Clear();
                     break;
+                    case "about":
+                        AnsiConsole.MarkupLine("About :sparkles:");
+                        break;
                     case "exit":
                         AnsiConsole.MarkupLine("[red1]Bye![/]");
                         Continue = false;

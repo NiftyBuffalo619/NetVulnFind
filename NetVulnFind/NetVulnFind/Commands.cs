@@ -61,7 +61,6 @@ namespace NetVulnFind
 
         public async Task<APIResponse> SearchWebCamsAsync(string country)
         {
-            AnsiConsole.MarkupLine("Searching Web Cams");
             string query = "\"WebCamXP 5\"";
             string url = $"https://search.censys.io/api/v2/hosts/search?q=services.http.response.html_title:{Uri.EscapeDataString(query)}";
             string credentials = $"{LoadConfig.API_KEY}:{LoadConfig.APP_SECRET}";
@@ -73,8 +72,7 @@ namespace NetVulnFind
             {
                 string content = await response.Content.ReadAsStringAsync();
                 APIResponse apiResponse = JsonConvert.DeserializeObject<APIResponse>(content);
-                AnsiConsole.MarkupLine($"[green1]API Status Code: {apiResponse.Code}[/]");
-                AnsiConsole.MarkupLine($"[green1]Status: {apiResponse.Status}[/]");
+                AnsiConsole.MarkupLine($"[green1]{apiResponse.Code} OK :check_mark:[/]");
                 AnsiConsole.MarkupLine($"[green1]Total: {apiResponse.Result.Total}[/]");
 
                 var table = new Table();

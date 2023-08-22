@@ -72,7 +72,7 @@ namespace NetVulnFind
             {
                 string content = await response.Content.ReadAsStringAsync();
                 APIResponse apiResponse = JsonConvert.DeserializeObject<APIResponse>(content);
-                AnsiConsole.MarkupLine($"[green1]{apiResponse.Code} OK :check_mark:[/]");
+                AnsiConsole.MarkupLine($":green_circle:[green1]{apiResponse.Code} OK[/]:check_mark:");
                 AnsiConsole.MarkupLine($"[green1]Total: {apiResponse.Result.Total}[/]");
 
                 var table = new Table();
@@ -98,6 +98,7 @@ namespace NetVulnFind
                 return JsonConvert.DeserializeObject<APIResponse>(content);
             }
 
+            AnsiConsole.MarkupLine(":cross_mark: [red1]Something went wrong[/] :cross_mark:");
             throw new Exception($"API request failed with status code {response.StatusCode}");
         }
     }

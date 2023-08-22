@@ -28,7 +28,7 @@ namespace NetVulnFind
                    task1.Increment(1);
                 }
            });
-            AnsiConsole.MarkupLine("[green1]Done[/]:check_mark:");
+            AnsiConsole.MarkupLine("[green1]Done[/]" + ":check_mark:");
         }
         static async Task<int> Main(string[] args)
         {
@@ -111,19 +111,38 @@ namespace NetVulnFind
                         break;
                     case "help":
                         var table = new Table();
+                        table.Border = TableBorder.Rounded;
                         table.AddColumn("Command");
                         table.AddColumn("Description");
                         table.AddRow("help", "Shows table with commands to help the user.");
-                        table.AddRow("detect-webcams", "Looks for webcams :warning: (Please note not all IP's work you have to try to visit them) :warning: ");
+                        table.AddRow("detect-webcams", "Looks for webcams :construction: :warning: (Please note not all IP's work you have to try to visit them) :warning: ");
                         table.AddRow("clear", "Cleares the console.");
-                        table.AddRow("about", "Some fun fact command");
+                        table.AddRow("about :sparkles:", "Some fun fact command");
+                        table.AddRow("github", "Gives a link where you can find this repository");
                         AnsiConsole.Write(table);
+                        break;
+                    case "github":
+                        AnsiConsole.WriteLine("\n\n");
+                        var GithubTable = new Table();
+                        GithubTable.Border = TableBorder.Minimal;
+                        GithubTable.AddColumn(":books:Github Repository");
+                        GithubTable.AddColumn("The Github repository can be found :backhand_index_pointing_right: [link]https://github.com/NiftyBuffalo619/NetVulnFind[/]");
+                        GithubTable.AddRow("If you find this repository helpful or interesting, please consider giving it a [yellow]star[/]:glowing_star:");
+                        AnsiConsole.Write(GithubTable);
+                        //AnsiConsole.MarkupLine("If you find this repository helpful or interesting, please consider giving it a [yellow]star[/]:glowing_star:");
+                        AnsiConsole.WriteLine("\n\n");
                         break;
                     case "clear":
                         Console.Clear();
                     break;
                     case "about":
                         AnsiConsole.MarkupLine("About :sparkles:");
+                        AnsiConsole.MarkupLine("");
+                        var AboutTable = new Table();
+                        AboutTable.Border = TableBorder.Minimal;
+                        AboutTable.AddColumn("General Info");
+                        AboutTable.AddColumn("NetVulnFind is fun made project by [bold]wannabeNifty[/] made to learn programming and some web vulnerabilities");
+                        AnsiConsole.Write(AboutTable);
                         break;
                     case "exit":
                         AnsiConsole.MarkupLine("[red1]Bye![/]");
